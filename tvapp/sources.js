@@ -1,4 +1,40 @@
 const availableSources = [
+          {
+        id: 'primesrc',
+        name: 'PrimeSrc',
+        isFrench: false,
+        urls: {
+            movie: 'https://primesrc.me/movie/{id}',
+            tv: 'https://primesrc.me/tv/{id}-{season}-{episode}'
+        }
+    },
+        {
+        id: 'vidnest',
+        name: 'VidNest',
+        isFrench: false,
+        urls: {
+            movie: 'https://vidnest.fun/movie/{id}',
+            tv: 'https://vidnest.fun/tv/{id}-{season}-{episode}'
+        }
+    },
+        {
+        id: 'vidrock',
+        name: 'VidRock',
+        isFrench: false,
+        urls: {
+            movie: 'https://www.vidrock.net/movie/{id}',
+            tv: 'https://www.vidrock.net/tv/{id}-{season}-{episode}'
+        }
+    },
+      {
+        id: 'vidking',
+        name: 'VidKing',
+        isFrench: false,
+        urls: {
+            movie: 'https://www.vidking.net/embed/movie/{id}',
+            tv: 'https://www.vidking.net/embed/tv/{id}-{season}-{episode}'
+        }
+    },
     {
         id: 'mapple',
         name: 'MappleTv',
