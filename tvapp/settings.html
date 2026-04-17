@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HGL07M90WG"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-HGL07M90WG');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - TvApp</title>
+    <meta content="#A17FC0" data-react-helmet="true" name="theme-color"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.3/cdn.min.js" defer></script>
+    <script src="sources.js"></script>
+    <link rel="stylesheet" href="mega.css">
+</head>
+<body class="page" x-data="{ activeSection: 'default-source' }">
+
+  <div class="shell">
+    <aside class="sidebar">
+      <button @click="window.history.back()" class="btn block">Back</button>
+      <hr class="rule">
+      <div class="stack">
+        <button
+          @click="activeSection = 'default-source'"
+          :class="{ 'active': activeSection === 'default-source' }"
+          class="btn block">
+          Default Source
+        </button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="container">
+        <header class="pagehead">
+          <h1 class="h1">Settings</h1>
+          <p class="sub">Customize your TvApp experience</p>
+        </header>
+
+        <section x-show="activeSection === 'default-source'" class="panel">
+          <div class="sectionhead">
+            <h2>Default Source</h2>
+            <p class="sub">Choose your preferred default source for streaming content. This setting will be remembered across sessions.</p>
+          </div>
+
+          <div class="cards" x-data="{
+            selectedSource: localStorage.getItem('defaultSource') || 'multiembed',
+            setSource(sourceId) {
+              this.selectedSource = sourceId;
+              localStorage.setItem('defaultSource', sourceId);
+            }
+          }">
+            <template x-for="source in availableSources" :key="source.id">
+              <div
+                @click="setSource(source.id)"
+                :class="{ 'selected': selectedSource === source.id }"
+                class="source-option">
+                <div class="row">
+                  <div>
+                    <div class="name" x-text="source.name"></div>
+                    <div class="small" x-text="source.isFrench ? 'French Content' : 'English Content'"></div>
+                  </div>
+                  <div class="radio" :class="selectedSource === source.id ? 'on' : ''"></div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+    <script>
+        if (!localStorage.getItem('defaultSource')) {
+            localStorage.setItem('defaultSource', 'embedsu');
+        }
+    </script>
+</body>
+</html>

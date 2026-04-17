@@ -1,0 +1,559 @@
+/* mega.css — Shared theme + motion + page-specific add-ons
+   Goal: One file that makes all pages match the index.css vibe,
+   while keeping Tailwind loaded for now.
+*/
+
+/* --------------------------
+   1) Tokens
+-------------------------- */
+:root{
+  --bg:#070707;
+  --panel:#0c0c0c;
+  --panel2:#0f0f0f;
+  --fg:#eaeaea;
+  --muted:#a0a0a0;
+  --muted2:#6f6f6f;
+  --line:#1f1f1f;
+  --line2:#303030;
+
+  --accent:#ffffff;
+
+  --radius:14px;
+  --radiusSm:10px;
+
+  --shadow: 0 10px 30px rgba(0,0,0,.5);
+}
+
+/* --------------------------
+   2) Base / Resets
+-------------------------- */
+*{ box-sizing:border-box; }
+html, body{ height:100%; }
+html{ scroll-behavior:smooth; }
+
+body{
+  margin:0;
+  background: radial-gradient(1200px 500px at 20% 0%, #0e0e0e 0%, var(--bg) 60%) fixed !important;
+  color: var(--fg) !important;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+  line-height: 1.55;
+}
+
+img{ max-width:100%; height:auto; display:block; }
+a{ color: var(--fg); }
+a:hover{ text-decoration:underline; }
+
+:focus-visible{
+  outline:2px solid rgba(255,255,255,.15);
+  outline-offset:2px;
+}
+
+[x-cloak]{ display:none !important; }
+
+/* Hard guarantee: no white “flashbang” background */
+html, body{ background:#070707 !important; }
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background: radial-gradient(1200px 500px at 20% 0%, #0e0e0e 0%, var(--bg) 60%);
+  z-index:-1;
+}
+
+/* --------------------------
+   3) Gut Tailwind “theme” layer
+   (We keep Tailwind for layout utilities, but replace its colors/surfaces.)
+-------------------------- */
+
+/* Normalize common Tailwind backgrounds into your panel system */
+.bg-gray-900, .bg-gray-950, .bg-slate-900, .bg-zinc-900,
+.bg-gray-800, .bg-slate-800, .bg-zinc-800,
+.bg-gray-700, .bg-slate-700, .bg-zinc-700{
+  background: transparent !important;
+}
+
+/* Many controls/cards use bg-gray-800-ish */
+[class*="bg-gray-8"], [class*="bg-slate-8"], [class*="bg-zinc-8"]{
+  background: linear-gradient(180deg, var(--panel2), #090909) !important;
+  border: 1px solid var(--line2) !important;
+  border-radius: var(--radius) !important;
+}
+
+/* Text normalization */
+.text-white{ color: var(--fg) !important; }
+.text-gray-400, .text-gray-300, .text-slate-400, .text-slate-300, .text-zinc-400, .text-zinc-300{
+  color: var(--muted) !important;
+}
+.text-gray-200, .text-slate-200, .text-zinc-200{
+  color: var(--fg) !important;
+}
+
+/* Kill the purple gradient title look, keep it clean */
+.bg-clip-text.text-transparent{
+  color: var(--fg) !important;
+  -webkit-text-fill-color: initial !important;
+  background: none !important;
+}
+
+/* Purple accents -> monochrome active */
+.bg-purple-600, .bg-purple-700, .bg-purple-500,
+.bg-violet-600, .bg-violet-700, .bg-violet-500,
+.from-purple-600, .to-violet-600,
+.text-purple-400, .text-violet-400{
+  background: linear-gradient(180deg, #141414, #0b0b0b) !important;
+  border: 1px solid #7a7a7a !important;
+  color: var(--fg) !important;
+}
+
+/* Focus rings -> subtle white */
+.focus\:ring-purple-400:focus,
+.focus\:ring-violet-400:focus,
+.focus\:ring-2:focus{
+  box-shadow: 0 0 0 2px rgba(255,255,255,.18) !important;
+}
+
+/* Tailwind ring colors -> monochrome */
+.ring-purple-500, .ring-violet-500, .ring-purple-400, .ring-violet-400{
+  --tw-ring-color: rgba(255,255,255,.22) !important;
+}
+.ring-2{
+  box-shadow: 0 0 0 2px rgba(255,255,255,.18) inset !important;
+}
+
+/* Rounded classes unify */
+.rounded-lg, .rounded-xl, .rounded-2xl{ border-radius: var(--radius) !important; }
+.rounded-full{ border-radius: 999px !important; }
+
+/* Shadows subtle */
+.shadow, .shadow-lg, .shadow-xl{ box-shadow: var(--shadow) !important; }
+
+/* Soften hover brightness */
+.hover\:bg-gray-700:hover,
+.hover\:bg-gray-600:hover{
+  filter: brightness(1.08);
+}
+
+/* --------------------------
+   4) Nav / Glass / Underline motion
+-------------------------- */
+.glass-effect{
+  background: linear-gradient(180deg, #0b0b0b, #070707) !important;
+  border-bottom: 1px solid var(--line2) !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.nav-link{
+  position: relative;
+  transition: all 0.3s ease;
+  padding: 0.5rem 0;
+  color: var(--fg) !important;
+}
+.nav-link::after{
+  content:'';
+  position:absolute;
+  width:0;
+  height:2px;
+  bottom:0;
+  left:50%;
+  background:#3a3a3a;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+.nav-link:hover{ color: var(--fg) !important; }
+.nav-link:hover::after{ width:100%; }
+
+/* Settings icon spin */
+.settings-icon{
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.settings-icon:hover{ transform: rotate(180deg); }
+
+/* --------------------------
+   5) Index-style motion (float, glow, hover cards, overlays)
+-------------------------- */
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+.floating-button{ animation: float 3s ease-in-out infinite; }
+
+@keyframes slide-down {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0); }
+}
+.animate-slide-down{ animation: slide-down 0.5s ease-out; }
+
+@keyframes glow {
+  0% { box-shadow: 0 0 5px rgba(255,255,255,0.08); }
+  50% { box-shadow: 0 0 20px rgba(255,255,255,0.14); }
+  100% { box-shadow: 0 0 5px rgba(255,255,255,0.08); }
+}
+
+/* Search glow-follow */
+.search-container{
+  position: relative;
+  width: 256px;
+}
+.search-container::before{
+  content:'';
+  position:absolute;
+  inset:-2px;
+  background: radial-gradient(
+    circle at var(--mouse-x, center) var(--mouse-y, center),
+    rgba(255,255,255,0.22) 0%,
+    rgba(255,255,255,0.10) 25%,
+    transparent 70%
+  );
+  border-radius: 9999px;
+  opacity:0;
+  transition: opacity 0.3s;
+  pointer-events:none;
+  z-index:0;
+}
+.search-container:hover::before,
+.search-container:focus-within::before{
+  opacity:1;
+}
+.search-input{
+  position: relative;
+  z-index:1;
+  transition: all 0.3s ease;
+  padding-right: 5rem !important;
+}
+.search-input:focus{
+  box-shadow: 0 0 20px rgba(255,255,255,0.12);
+  transform: scale(1.02);
+  background: rgba(15,15,15,0.9) !important;
+}
+.search-input + div{
+  transition: all 0.3s ease;
+  opacity: 0.5;
+  z-index: 2;
+}
+.search-input:focus + div{
+  opacity: 0.7;
+  transform: translateY(-50%) scale(0.95);
+}
+
+/* Card hover + overlay */
+.card-hover{
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+.card-hover::after{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  background: linear-gradient(
+    35deg,
+    rgba(255,255,255,0.14),
+    rgba(255,255,255,0),
+    rgba(255,255,255,0.14)
+  );
+  border-radius: 0.5rem;
+  z-index:-1;
+  opacity:0;
+  transition: opacity 0.4s ease;
+}
+.card-hover:hover{
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.6);
+}
+.card-hover:hover::after{ opacity:1; }
+
+.card-overlay{
+  opacity:0;
+  transition: all 0.4s ease;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.70) 50%,
+    rgba(0, 0, 0, 0.25) 100%
+  );
+}
+.card-hover:hover .card-overlay{
+  opacity:1;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.80) 40%,
+    rgba(0, 0, 0, 0.20) 100%
+  );
+}
+.card-hover img{ transition: all 0.4s ease; }
+.card-hover:hover img{ filter: blur(2px) brightness(0.9); }
+
+/* Modal animation helper */
+.modal-animation{ animation: modalFade 0.3s ease-out; }
+@keyframes modalFade{
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Scroll-to-top helper */
+.scroll-top-button{
+  transition: all 0.3s ease;
+  opacity:0;
+  visibility:hidden;
+}
+.scroll-top-button.visible{
+  opacity:1;
+  visibility:visible;
+}
+
+/* Donation banner tone down */
+#donationBanner{
+  background: linear-gradient(180deg, #141414, #0b0b0b) !important;
+  border: 1px solid var(--line2) !important;
+}
+#donationBanner a{
+  background: #fff !important;
+  color: #000 !important;
+}
+
+/* --------------------------
+   6) Global selects fix (prevents white dropdown flash)
+-------------------------- */
+select{
+  background:#101010 !important;
+  color: var(--fg) !important;
+  border:1px solid var(--line2) !important;
+}
+select option{
+  background:#101010;
+  color: var(--fg);
+}
+select option:hover,
+select option:checked{
+  background:#181818;
+}
+
+/* --------------------------
+   7) Shared semantic components (optional later refactor)
+-------------------------- */
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:10px 12px;
+  border-radius: var(--radiusSm);
+  border:1px solid var(--line2);
+  background: linear-gradient(180deg, #101010, #0b0b0b);
+  color: var(--fg);
+  text-decoration:none;
+  cursor:pointer;
+  user-select:none;
+  font:inherit;
+}
+.btn:hover{ border-color:#3a3a3a; text-decoration:underline; }
+.btn.block{ width:100%; justify-content:flex-start; }
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:8px 10px;
+  border-radius: 999px;
+  border:1px solid var(--line2);
+  background: linear-gradient(180deg, #101010, #0b0b0b);
+  color: var(--muted);
+  cursor:pointer;
+  user-select:none;
+  font:inherit;
+}
+.pill:hover{ border-color:#3a3a3a; }
+.pill.active{
+  color: var(--fg);
+  border-color:#7a7a7a;
+  background: linear-gradient(180deg, #141414, #0b0b0b);
+}
+
+.panel{
+  border:1px solid var(--line2);
+  background: linear-gradient(180deg, var(--panel2), #090909);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.panel h2, .panel h3{
+  margin:0 0 8px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--line);
+}
+
+.cards{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:12px;
+}
+@media (max-width: 980px){
+  .cards{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 640px){
+  .cards{ grid-template-columns: 1fr; }
+}
+
+.row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+/* Scrollbars (optional) */
+.scrollbar-thin{ scrollbar-width: thin; }
+.scrollbar-thumb-purple-500, .scrollbar-thumb-violet-500{ scrollbar-color: #4a4a4a transparent; }
+.scrollbar-track-gray-800, .scrollbar-track-slate-800{ scrollbar-color: #4a4a4a #0b0b0b; }
+
+*::-webkit-scrollbar{ width:10px; height:10px; }
+*::-webkit-scrollbar-track{ background:#0b0b0b; }
+*::-webkit-scrollbar-thumb{
+  background:#3a3a3a;
+  border-radius:999px;
+  border:2px solid #0b0b0b;
+}
+
+/* --------------------------
+   8) SETTINGS page add-ons (from settings.css)
+-------------------------- */
+body.page{ /* your settings page uses body.page */
+  /* base already covers it, but keep if needed */
+}
+
+.shell{
+  padding-top:58px;
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:100vh;
+}
+@media (max-width: 900px){
+  .shell{ grid-template-columns:1fr; }
+}
+
+.sidebar{
+  border-right:1px solid var(--line2);
+  background: linear-gradient(180deg, var(--panel), #090909);
+  padding:16px;
+}
+
+.rule{
+  border:0;
+  border-top:1px solid var(--line);
+  margin:12px 0;
+}
+.stack{ display:flex; flex-direction:column; gap:10px; }
+
+.main{
+  padding:22px 18px 60px;
+  background: rgba(255,255,255,0.02);
+}
+.container{ max-width:900px; margin:0 auto; }
+
+.pagehead{ margin-bottom:18px; }
+.h1{ margin:0 0 6px; font-size:2rem; letter-spacing:.2px; }
+.sub{ margin:0; color: var(--muted); }
+
+.sectionhead{ margin-bottom:12px; }
+
+.source-option{
+  border:1px solid var(--line2);
+  border-radius: var(--radius);
+  padding:12px;
+  cursor:pointer;
+  background: linear-gradient(180deg, #101010, #0b0b0b);
+  transition: transform .08s ease, border-color .12s ease;
+}
+.source-option:hover{ border-color:#3a3a3a; transform: translateY(-1px); }
+.source-option.selected{
+  border-color:#8a8a8a;
+  box-shadow: 0 0 0 1px rgba(255,255,255,.06) inset;
+}
+.name{ font-size:1rem; }
+.small{ font-size:.86rem; color: var(--muted); }
+
+.radio{
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  border:2px solid #505050;
+  flex:0 0 auto;
+}
+.radio.on{ border-color:#cfcfcf; background:#cfcfcf; }
+
+/* --------------------------
+   9) WATCH page add-ons
+-------------------------- */
+#player-container{
+  border: 1px solid var(--line2);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #050505;
+}
+
+.section-content{
+  border:1px solid var(--line2);
+  background: linear-gradient(180deg, var(--panel), #090909);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+
+.animated-text{
+  color: var(--fg) !important;
+  text-shadow: 0 0 8px rgba(255,255,255,.08) !important;
+}
+
+#particles-js{ opacity: .18; }
+
+/* --------------------------
+   10) LIVE SPORTS page add-ons
+-------------------------- */
+.match-card{
+  position:relative;
+  transition: transform .4s cubic-bezier(0.4,0,0.2,1),
+              box-shadow .4s;
+}
+.match-card::after{
+  content:'';
+  position:absolute;
+  inset:-1px;
+  background: linear-gradient(
+    35deg,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0),
+    rgba(255,255,255,0.12)
+  );
+  border-radius: var(--radius);
+  opacity:0;
+  transition: opacity .4s;
+  z-index:-1;
+}
+.match-card:hover{
+  transform: translateY(-6px) scale(1.02);
+  box-shadow:0 20px 30px -10px rgba(0,0,0,.6);
+}
+.match-card:hover::after{ opacity:1; }
+
+.live-indicator{ animation: pulse 2s infinite; }
+@keyframes pulse{
+  0%{opacity:.5}
+  50%{opacity:1}
+  100%{opacity:.5}
+}
+
+/* Modal/backdrop feel for sports/watch */
+.fixed.inset-0{
+  background: rgba(0,0,0,.92) !important;
+}
+
+iframe{
+  background:#000;
+  border-radius: var(--radius);
+}
+#fentAuthHud{
+  top:auto !important;
+  right:auto !important;
+  bottom:16px;
+  left:16px;
+}
