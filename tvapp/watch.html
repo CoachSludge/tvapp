@@ -318,7 +318,7 @@
                                 <h4 class="text-sm md:text-base text-gray-300 font-medium">English Sources:</h4>
                                 <div class="flex flex-wrap gap-2">
                                     <template x-for="source in availableSources" :key="source.id">
-                                        <template x-if="!source.isFrench">
+                                        <template x-if="(source.language || 'en') === 'en'">
                                             <button 
                                                 @click="selectedSource = source.id; updateVideoUrl()"
                                                 class="px-3 md:px-4 py-1.5 md:py-2 rounded-lg transition-all duration-300 text-sm md:text-base"
@@ -329,11 +329,28 @@
                                     </template>
                                 </div>
                             </div>
+                        
                             <div class="space-y-2">
                                 <h4 class="text-sm md:text-base text-gray-300 font-medium">French Sources:</h4>
                                 <div class="flex flex-wrap gap-2">
                                     <template x-for="source in availableSources" :key="source.id">
-                                        <template x-if="source.isFrench">
+                                        <template x-if="source.language === 'fr'">
+                                            <button 
+                                                @click="selectedSource = source.id; updateVideoUrl()"
+                                                class="px-3 md:px-4 py-1.5 md:py-2 rounded-lg transition-all duration-300 text-sm md:text-base"
+                                                :class="selectedSource === source.id ? 'bg-purple-600 text-white' : 'bg-gray-700 hover:bg-gray-600 text-gray-200'"
+                                                x-text="source.name">
+                                            </button>
+                                        </template>
+                                    </template>
+                                </div>
+                            </div>
+                        
+                            <div class="space-y-2">
+                                <h4 class="text-sm md:text-base text-gray-300 font-medium">Portuguese Sources:</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <template x-for="source in availableSources" :key="source.id">
+                                        <template x-if="source.language === 'pt'">
                                             <button 
                                                 @click="selectedSource = source.id; updateVideoUrl()"
                                                 class="px-3 md:px-4 py-1.5 md:py-2 rounded-lg transition-all duration-300 text-sm md:text-base"
@@ -860,17 +877,22 @@
                 tryNextSource() {
                     const currentIndex = this.availableSources.findIndex(s => s.id === this.selectedSource);
                     if (currentIndex === -1) return;
-
+                
                     const currentSource = this.availableSources[currentIndex];
-                    const isFrench = currentSource.isFrench;
+                    const currentLanguage = currentSource.language || 'en';
                     
                     let nextIndex = (currentIndex + 1) % this.availableSources.length;
+                
                     while (nextIndex !== currentIndex) {
-                        if (this.availableSources[nextIndex].isFrench === isFrench) {
-                            this.selectedSource = this.availableSources[nextIndex].id;
+                        const nextSource = this.availableSources[nextIndex];
+                        const nextLanguage = nextSource.language || 'en';
+                
+                        if (nextLanguage === currentLanguage) {
+                            this.selectedSource = nextSource.id;
                             this.updateVideoUrl();
                             return;
                         }
+                
                         nextIndex = (nextIndex + 1) % this.availableSources.length;
                     }
                 },
