@@ -767,25 +767,6 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
     </svg>
 </button>
-
-<script>
-    // Check if user has disabled the donation banner
-    const showDonationBanner = localStorage.getItem('showDonationBanner') !== 'false';
-    const banner = document.getElementById('donationBanner');
-    
-    if (!showDonationBanner && banner) {
-        banner.style.display = 'none';
-    }
-    
-    const closeBannerButton = document.getElementById('closeBanner');
-    if (closeBannerButton) {
-        closeBannerButton.addEventListener('click', function() {
-            if (banner) {
-                banner.style.display = 'none';
-            }
-        });
-    }
-</script>
 <script>
     document.querySelector('.search-container input').addEventListener('mousemove', (e) => {
         const container = e.target.parentElement;
@@ -794,16 +775,6 @@
         const y = ((e.clientY - rect.top) * 100) / rect.height;
         container.style.setProperty('--mouse-x', x + '%');
         container.style.setProperty('--mouse-y', y + '%');
-    });
-</script>
-<script>
-    window.addEventListener('appearance-changed', () => {
-        const particlesEl = document.getElementById('particles-js');
-        if (localStorage.getItem('showParticles') === 'false') {
-            particlesEl.style.display = 'none';
-        } else {
-            particlesEl.style.display = 'block';
-        }
     });
 </script>
 </body>
